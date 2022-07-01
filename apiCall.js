@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const register = require('./routes/registerAPI/register')
+const login = require('./routes/loginAPI/login')
 
 var fs = require("fs");
 var path = require("path");
@@ -58,5 +59,6 @@ router.post("/", upload.single("image"), (req, res, next) => {
 
 
     router.post("/register", register.register)
+    router.get("/login", login.login)
 
 module.exports = router;
