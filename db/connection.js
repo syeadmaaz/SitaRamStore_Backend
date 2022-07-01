@@ -7,5 +7,5 @@ mongoose
     console.log("Connection Successful");
   })
   .catch((err) => {
-    console.log("Connection Unsuccessful");
+    console.log("Connection Unsuccessful, Error:",err);
   });
