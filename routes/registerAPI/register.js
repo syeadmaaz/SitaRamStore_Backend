@@ -27,7 +27,7 @@ exports.register = async (req, res) => {
         if (!name || !mobile ||!email ||!password) {
             return res.status(422).json({ error: "Please fill the fields properly" });
           }
-            if(email && !validateFunction.validateEmail(email)) return res.status(422).json({ error: "Please fill the Email correctly" });
+            if(!validateFunction.validateEmail(email)) return res.status(422).json({ error: "Please fill the Email correctly" });
             if(!validateFunction.validateMobileNo(mobile)) return res.status(422).json({ error: "Please fill the mobileNo correctly" });
             userExist  = await User.findOne({$or : [{mobile},{email}] } )
             if(userExist) return res.status(422).json({ error: "Email or Mobile already Exist" });
