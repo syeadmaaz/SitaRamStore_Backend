@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const register = require('./routes/registerAPI/register')
-const login = require('./routes/loginAPI/login')
+const register = require("./routes/registerAPI/register");
+const login = require("./routes/loginAPI/login");
 
 var fs = require("fs");
 var path = require("path");
@@ -20,7 +20,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 var imgModel = require("./model/imgModel");
-var user = require("./model/userMaster")
+var user = require("./model/userMaster");
 // router.get("/", (req, res) => {
 //   res.send("Hello World from the server router.js");
 // });
@@ -57,8 +57,7 @@ router.post("/", upload.single("image"), (req, res, next) => {
   });
 });
 
-
-    router.post("/register", register.register)
-    router.get("/login", login.login)
+router.post("/register", register.register);
+router.get("/login", login.login);
 
 module.exports = router;

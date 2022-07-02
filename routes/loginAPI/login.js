@@ -19,7 +19,6 @@ const iv = crypto
 
 exports.login = async (req, res) => {
   const { userName, password } = req.query;
-
   console.log(req.query);
 
   try {
