@@ -39,7 +39,7 @@ exports.register = async (req, res) => {
       return res.status(500).json({ error: "Failed to SignUp" });
 
       res.status(201).json({
-        message:`You have Successfully Signed Up, Please use your Email and Password to Login`,
+        message:`You have Successfully Signed Up, Please use your Email or Mobile No and Password to Login`,
         
       });
     }
