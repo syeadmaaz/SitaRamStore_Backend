@@ -18,8 +18,9 @@ const iv = crypto
   .substr(0, 16);
 
 exports.login = async (req, res) => {
-  const { userName, password } = req.query;
-  console.log(req.query);
+  const { userName, password } = req.body;
+  console.log(req.body);
+  // console.log(req.body.password);
 
   try {
     if (!userName || !password) {
@@ -36,16 +37,15 @@ exports.login = async (req, res) => {
         return res.status(422).json({ error: "Fill the Email correctly" });
 
       let decpassword = crypt.decrypt(userExist.password, secretKey, iv);
-
       console.log(decpassword);
 
       if (decpassword === password)
         return res.status(201).json({ message: "SignIn Successful" });
       // if(decpassword!==password)
-      else
-        return res
-          .status(422)
-          .json({ error: "Invalid Password" });
+      else {
+        // console.log(res.status(422).json({ error: "Invalid Password" }));
+        return res.status(422).json({ error: "Invalid Password" });
+      }
     } else if (validateFunction.validateMobileNo(userName)) {
       mobile = userName;
 
@@ -56,20 +56,13 @@ exports.login = async (req, res) => {
         return res.status(422).json({ error: "Fill the Mobile No correctly" });
 
       let decpassword = crypt.decrypt(userExist.password, secretKey, iv);
-
-      // console.log(decpassword);
+      console.log(decpassword);
 
       if (decpassword === password)
         return res.status(201).json({ message: "SignIn Successful" });
-
-      if (decpassword !== password)
-        return res
-          .status(422)
-          .json({ error: "Invalid Password"});
+      else return res.status(422).json({ error: "Invalid Password" });
     } else
-      return res
-        .status(422)
-        .json({ error: "Fill your credentials properly"});
+      return res.status(422).json({ error: "Fill your credentials properly" });
   } catch (err) {
     console.log(err);
   }

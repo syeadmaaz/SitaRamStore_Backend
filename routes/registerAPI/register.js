@@ -1,8 +1,8 @@
-const User = require("../../model/userMaster")
+const User = require("../../model/userMaster");
 
 const crypto = require("crypto");
 const crypt = require("../../utility/crypt");
-const validateFunction = require("../../utility/validateFunction")
+const validateFunction = require("../../utility/validateFunction");
 
 const secret_key = process.env.SECRET_KEY;
 const secret_iv = process.env.SECRET_IV;
@@ -19,36 +19,39 @@ const iv = crypto
   .substr(0, 16);
 
 exports.register = async (req, res) => {
-    const { name, email, mobile, password} = req.body;
+  const { name, email, mobile, password } = req.body;
 
-    console.log(req.body)
+  console.log(req.body);
 
-    try{
-        if (!name || !mobile ||!email ||!password) {
-            return res.status(422).json({ error: "Please fill the fields properly" });
-          }
-            if(!validateFunction.validateEmail(email)) return res.status(422).json({ error: "Please fill the Email correctly" });
-            if(!validateFunction.validateMobileNo(mobile)) return res.status(422).json({ error: "Please fill the mobileNo correctly" });
-            userExist  = await User.findOne({$or : [{mobile},{email}] } )
-            if(userExist) return res.status(422).json({ error: "Email or Mobile already Exist" });
-            
-            let encpassword = crypt.encrypt(password, secretKey, iv);
+  try {
+    if (!name || !mobile || !email || !password) {
+      return res.status(422).json({ error: "Please fill the fields properly" });
+    }
+    if (!validateFunction.validateEmail(email))
+      return res.status(500).json({ error: "Please fill the Email correctly" });
+    if (!validateFunction.validateMobileNo(mobile))
+      return res
+        .status(422)
+        .json({ error: "Please fill the mobileNo correctly" });
+    userExist = await User.findOne({ $or: [{ mobile }, { email }] });
+    if (userExist)
+      return res.status(422).json({ error: "Email or Mobile already Exist" });
 
-            const user = new User({name, email, mobile, password:encpassword.encryptedData})
-            if(!await user.save())
+    let encpassword = crypt.encrypt(password, secretKey, iv);
+
+    const user = new User({
+      name,
+      email,
+      mobile,
+      password: encpassword.encryptedData,
+    });
+    if (!(await user.save()))
       return res.status(500).json({ error: "Failed to SignUp" });
 
-      res.status(201).json({
-        message:`You have Successfully Signed Up, Please use your Email or Mobile No and Password to Login`,
-        
-      });
-    }
-
-    catch(err){
-        console.log(err);
-    }
-
-
-
-
-}
+    res.status(201).json({
+      message: `You have Successfully Signed Up, Please use your Email or Mobile No and Password to Login`,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};

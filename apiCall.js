@@ -58,6 +58,6 @@ router.post("/", upload.single("image"), (req, res, next) => {
 });
 
 router.post("/register", register.register);
-router.get("/login", login.login);
+router.post("/login", login.login);
 
 module.exports = router;
