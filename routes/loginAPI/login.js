@@ -19,32 +19,57 @@ const iv = crypto
 
 
 exports.login = async (req, res) =>{
-    const {email, password} = req.query;
+    const {userName,password} = req.query;
 
     console.log(req.query);
 
-
     try{
-        if (!email || !password) {
+        if (!userName || !password) {
             return res.status(422).json({ error: "Please fill the fields properly" });
         }
-        if(!validateFunction.validateEmail(email)) return res.status(422).json({ error: "Please fill the Email correctly" });
 
-        userExist  = await User.findOne({email})
+        if(validateFunction.validateEmail(userName)) {
 
-        if(!userExist) return res.status(422).json({ error: "Please SignUp First" });
+            email=userName;
 
-       
+            userExist  = await User.findOne({email})
+            console.log(userExist);
 
-        let decpassword = crypt.decrypt(userExist.password, secretKey, iv);
+            if(!userExist) return res.status(422).json({ error: "Please SignUp First" });
 
-        console.log(decpassword);
+            let decpassword = crypt.decrypt(userExist.password, secretKey, iv);
 
-        if(decpassword===password) return res.status(201).json({ message: "SignedIN Successfully"});
+            console.log(decpassword);
 
-        if(decpassword!==password)
-        return res.status(422).json({ error: "Please fill the Email or Password correctly" });
+            if(decpassword===password) return res.status(201).json({ message: "SignedIN Successfully"});
 
+            if(decpassword!==password)
+            return res.status(422).json({ error: "Please fill the Email or Password correctly" });
+
+        }
+
+        else if(validateFunction.validateMobileNo(userName)){
+
+            mobile=userName;
+
+            userExist  = await User.findOne({mobile})
+            // console.log(userExist);
+
+            if(!userExist) return res.status(422).json({ error: "Please SignUp First" });
+        
+            let decpassword = crypt.decrypt(userExist.password, secretKey, iv);
+
+            // console.log(decpassword);
+
+            if(decpassword===password) return res.status(201).json({ message: "SignedIN Successfully"});
+
+            if(decpassword!==password)
+            return res.status(422).json({ error: "Please fill the Email or Password correctly" });
+        }
+
+        else{
+
+        }
 
     }
 
