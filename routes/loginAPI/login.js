@@ -44,7 +44,7 @@ exports.login = async (req, res) =>{
             if(decpassword===password) return res.status(201).json({ message: "SignedIN Successfully"});
 
             if(decpassword!==password)
-            return res.status(422).json({ error: "Please fill the Email or Password correctly" });
+            return res.status(422).json({ error: "Please fill the Password correctly" });
 
         }
 
@@ -64,12 +64,11 @@ exports.login = async (req, res) =>{
             if(decpassword===password) return res.status(201).json({ message: "SignedIN Successfully"});
 
             if(decpassword!==password)
-            return res.status(422).json({ error: "Please fill the Email or Password correctly" });
+            return res.status(422).json({ error: "Please fill the Password correctly" });
         }
 
-        else{
-
-        }
+        else
+        return res.status(422).json({ error: "Please fill the Email or Mobile Correctly" });
 
     }
 
