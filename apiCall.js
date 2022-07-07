@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
+
 const register = require('./routes/registerAPI/register')
 const login = require('./routes/loginAPI/login')
 const {imageUpload} = require('./routes/admin/imageUpload')
 
 var imgModel = require("./model/imgModel");
+
 
 var fs = require("fs");
 var path = require("path");
@@ -77,8 +79,7 @@ router.post("/adminUpload", upload.single("image"), imageUpload);
   // });
 
 
-
-    router.post("/register", register.register)
-    router.get("/login", login.login)
+router.post("/register", register.register);
+router.post("/login", login.login);
 
 module.exports = router;
