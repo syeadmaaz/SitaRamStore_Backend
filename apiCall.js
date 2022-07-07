@@ -3,9 +3,7 @@ const router = express.Router();
 
 const register = require('./routes/registerAPI/register')
 const login = require('./routes/loginAPI/login')
-const {imageUpload} = require('./routes/admin/imageUpload')
-
-var imgModel = require("./model/imgModel");
+const {categoryUpdate,getCategory} = require('./routes/admin/category')
 
 
 var fs = require("fs");
@@ -38,18 +36,9 @@ var upload = multer({ storage: storage });
 //   res.send("Hello World from the server router.js");
 // });
 
-router.get("/adminUpload", (req, res) => {
-  imgModel.find({}, (err, items) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("An error occurred", err);
-    } else {
-      res.render("imagesPage", { items: items });
-    }
-  });
-});
+router.get("/getCategory", getCategory);
 
-router.post("/adminUpload", upload.single("image"), imageUpload);
+router.post("/adminCategoryUpdate", upload.single("image"), categoryUpdate);
 
 
   // console.log(image)
