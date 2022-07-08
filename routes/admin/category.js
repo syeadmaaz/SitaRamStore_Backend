@@ -19,7 +19,7 @@ exports.categoryUpdate = async(req,res) => {
       var categoryObj = new Category({
         categoryID:`C-${Date.now()}`,
         categoryName: req.body.name,
-        categoryDescription: req.body.desc,
+        categoryDescription: req.body.desc?req.body.desc:null,
         categoryImage: result.url
       });
 
