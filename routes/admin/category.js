@@ -16,8 +16,6 @@ exports.categoryUpdate = async(req,res) => {
 
       console.log(result.url);
 
-      if(req.body.desc) console.log("null")
-
       var categoryObj = new Category({
         categoryID:`C-${Date.now()}`,
         categoryName: req.body.name,
