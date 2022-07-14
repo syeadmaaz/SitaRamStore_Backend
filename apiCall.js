@@ -4,6 +4,7 @@ const router = express.Router();
 const register = require('./routes/registerAPI/register')
 const login = require('./routes/loginAPI/login')
 const {categoryUpdate,getCategory} = require('./routes/admin/category')
+const {productUpdate} = require('./routes/admin/product')
 
 
 var fs = require("fs");
@@ -39,6 +40,8 @@ var upload = multer({ storage: storage });
 router.get("/getCategory", getCategory);
 
 router.post("/adminCategoryUpdate", upload.single("image"), categoryUpdate);
+
+router.post("/adminProductUpdate", upload.single("image"), productUpdate);
 
 
   // console.log(image)

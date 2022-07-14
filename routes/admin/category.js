@@ -35,7 +35,7 @@ exports.categoryUpdate = async(req,res) => {
       res
         .status(500)
         .json({ success: false, message: "server error, try after some time" });
-      console.log("Error while uploading profile image", error.message);
+      console.log("Error while uploading category image", error.message);
     }
 
 }
