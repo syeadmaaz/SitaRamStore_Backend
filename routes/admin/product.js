@@ -19,7 +19,8 @@ exports.productUpdate = async (req, res) => {
       categoryID: req.body.categoryID,
       productID: `P-${Date.now()}`,
       productName: req.body.name,
-      productDescription: req.body.desc ? req.body.desc : null,
+      productDescription: req.body.desc,
+      productPrice: req.body.price,
       productImage: result.url,
     });
 
@@ -39,15 +40,16 @@ exports.productUpdate = async (req, res) => {
   }
 };
 
-// exports.getProduct = async (req, res) => {
-//   Product.find({}, (err, items) => {
-//     if (err) {
-//       console.log(err);
-//       res
-//         .status(500)
-//         .json({ success: false, message: "An error occurred", err });
-//     } else {
-//       res.status(200).json({ success: true, categoryItems: items });
-//     }
-//   });
-// };
+exports.getProduct = async (req, res) => {
+  console.log(req.query)
+  Product.find({categoryID: req.query.categoryID}, (err, items) => {
+    if (err) {
+      console.log(err);
+      res
+        .status(500)
+        .json({ success: false, message: "An error occurred", err });
+    } else {
+      res.status(200).json({ success: true, productItems: items });
+    }
+  });
+};
