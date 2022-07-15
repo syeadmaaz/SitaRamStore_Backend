@@ -19,7 +19,7 @@ const iv = crypto
   .substr(0, 16);
 
 exports.register = async (req, res) => {
-  const { name, email, mobile, password } = req.body;
+  const { name, email, mobile, password, userType } = req.body;
 
   console.log(req.body);
 
@@ -38,12 +38,14 @@ exports.register = async (req, res) => {
       return res.status(422).json({ error: "Email or Mobile already Exist" });
 
     let encpassword = crypt.encrypt(password, secretKey, iv);
+    
 
     const user = new User({
       name,
       email,
       mobile,
       password: encpassword.encryptedData,
+      userType
     });
     if (!(await user.save()))
       return res.status(500).json({ error: "Failed to SignUp" });

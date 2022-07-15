@@ -38,9 +38,11 @@ exports.login = async (req, res) => {
 
       let decpassword = crypt.decrypt(userExist.password, secretKey, iv);
       console.log(decpassword);
+      
 
       if (decpassword === password)
-        return res.status(201).json({ message: "SignIn Successful" });
+        return res.status(201).json({userType:userExist.userType, message: "SignIn Successful" });
+
       // if(decpassword!==password)
       else {
         // console.log(res.status(422).json({ error: "Invalid Password" }));
@@ -59,7 +61,7 @@ exports.login = async (req, res) => {
       console.log(decpassword);
 
       if (decpassword === password)
-        return res.status(201).json({ message: "SignIn Successful" });
+        return res.status(201).json({userType:userExist.userType, message: "SignIn Successful" });
       else return res.status(422).json({ error: "Invalid Password" });
     } else
       return res.status(422).json({ error: "Fill your credentials properly" });
