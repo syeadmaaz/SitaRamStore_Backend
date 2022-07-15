@@ -6,7 +6,6 @@ exports.categoryUpdate = async(req,res) => {
     console.log(req)
 
     try {
-
       const result = await cloudinary.uploader.upload(req.file.path, {
         public_id: `image-${Date.now()}`,
         width: 500,
