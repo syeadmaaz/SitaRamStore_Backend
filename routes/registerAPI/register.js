@@ -38,19 +38,20 @@ exports.register = async (req, res) => {
       return res.status(422).json({ error: "Email or Mobile already Exist" });
 
     let encpassword = crypt.encrypt(password, secretKey, iv);
-    
 
     const user = new User({
       name,
       email,
       mobile,
       password: encpassword.encryptedData,
-      userType
+      userType,
     });
     if (!(await user.save()))
       return res.status(500).json({ error: "Failed to SignUp" });
 
-    res.status(201).json({
+    return res.status(201).json({
+      userName: mobile,
+      userType: userType,
       message: `You have Successfully Signed Up, Please use your Email or Mobile No and Password to Login`,
     });
   } catch (err) {
