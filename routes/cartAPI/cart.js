@@ -4,23 +4,16 @@ exports.saveCart = async (req, res) => {
   const userName = req.query.userName;
   const productDetails = req.query.productDetails;
   console.log(req.query);
+  // console.log(productDetails);
   try {
-    const cart = new CustomerCart({
+    const cart = await CustomerCart.findOneAndUpdate(
+      {userName: userName},
+      {
       userName,
       productDetails,
-    });
-
-    if (
-      !(await cart.findAndModify({
-        query: { userName },
-        update: { $set: { productDetails } },
-        upsert: true,
-      }))
-    )
-      //  if (!(await cart.save()))
-      return res
-        .status(500)
-        .json({ success: false, message: "Failed to Save Cart" });
+      },
+      {upsert: true}
+    );
 
     return res.status(201).json({
       success: true,
@@ -36,3 +29,14 @@ exports.saveCart = async (req, res) => {
 //    update: { $set: { productDetails } },
 //    upsert: true,
 //  })
+
+// cart.find({userName}).upsert().replaceOne({
+//   userName,
+//   productDetails
+// })
+
+// cart.findAndModify({
+//   query: { userName },
+//   update: { $set: { productDetails } },
+//   upsert: true,
+// })
