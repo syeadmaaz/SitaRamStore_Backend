@@ -5,6 +5,7 @@ const register = require('./routes/registerAPI/register')
 const login = require('./routes/loginAPI/login')
 const {categoryUpdate,getCategory} = require('./routes/admin/category')
 const {productUpdate, getProduct} = require('./routes/admin/product')
+const {saveCart} = require('./routes/cartAPI/cart')
 
 
 var fs = require("fs");
@@ -32,7 +33,6 @@ const fileFilter = (req, file, cb) => {
 var upload = multer({ storage: storage });
 
 
-
 router.get("/", (req, res) => {
   res.send("Hello World from the server router.js");
 });
@@ -41,11 +41,12 @@ router.post("/register", register.register);
 router.post("/login", login.login);
 
 
-
 router.post("/adminCategoryUpdate", upload.single("image"), categoryUpdate);
 router.post("/adminProductUpdate", upload.single("image"), productUpdate);
 
 router.get("/getCategory", getCategory);
 router.get("/getProduct",getProduct)
+
+router.get("/saveCart",saveCart)
 
 module.exports = router;
