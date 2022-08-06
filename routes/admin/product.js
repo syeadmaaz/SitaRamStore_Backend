@@ -13,13 +13,14 @@ exports.productUpdate = async (req, res) => {
       crop: "fill",
     });
 
-    console.log(result.url);
+    console.log(req.body);
 
     var productObj = new Product({
       categoryID: req.body.categoryID,
       productID: `P-${Date.now()}`,
       productName: req.body.name,
       productDescription: req.body.desc,
+      productMRP: req.body.mrp,
       productPrice: req.body.price,
       productImage: result.url,
     });
