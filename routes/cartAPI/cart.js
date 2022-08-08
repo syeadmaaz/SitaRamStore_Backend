@@ -1,9 +1,9 @@
 var CustomerCart = require("../../model/mCustomerCart");
 
 exports.saveCart = async (req, res) => {
-  const userName = req.query.userName;
-  const productDetails = req.query.productDetails;
-  console.log(req.query);
+  const userName = req.body.userName;
+  const productDetails = req.body.productDetails;
+  console.log(req.body);
   // console.log(productDetails);
   try {
     const cart = await CustomerCart.findOneAndUpdate(
@@ -14,7 +14,7 @@ exports.saveCart = async (req, res) => {
       },
       {upsert: true}
     );
-
+    
     return res.status(201).json({
       success: true,
       message: "Cart Saved Successfully",
@@ -24,19 +24,18 @@ exports.saveCart = async (req, res) => {
   }
 };
 
-//  db.cart.findAndModify({
-//    query: { userName },
-//    update: { $set: { productDetails } },
-//    upsert: true,
-//  })
-
-// cart.find({userName}).upsert().replaceOne({
-//   userName,
-//   productDetails
-// })
-
-// cart.findAndModify({
-//   query: { userName },
-//   update: { $set: { productDetails } },
-//   upsert: true,
-// })
+exports.fetchCart = async(req,res) => {
+  try{
+    const cartDetails = await CustomerCart.findOne({
+      userName: req.query.userName,
+  });
+    console.log(cartDetails.productDetails)
+    return res.status(201).json({
+      success: true,
+      cartDetails: cartDetails.productDetails,
+      message: "Cart Fetched Successfully",
+    });
+  }catch(err) {
+    console.log(err)
+  }
+}
