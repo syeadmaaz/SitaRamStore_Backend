@@ -132,3 +132,62 @@ exports.fetchCart = async(req,res) => {
     console.log(err)
   }
 }
+
+exports.clearCart = async(req,res) => {
+  const userName = req.query.userName;
+  var mobile;
+
+  try{
+    if (validateFunction.validateEmail(userName)) {
+      email = userName;
+
+      userExist = await User.findOne({ email });
+      console.log(userExist);
+
+      //if user is not registered
+      if (!userExist)
+        return res.status(422).json({
+          success: false,
+          message: "User not registered!!",
+        });
+
+      mobile = userExist.mobile;
+    }else if (validateFunction.validateMobileNo(userName)) {
+      mobile = userName;
+
+      userExist = await User.findOne({ mobile });
+      console.log(userExist);
+
+      //if user is not registered
+      if (!userExist)
+        return res.status(422).json({
+          success: false,
+          message: "User not registered!!",
+        });
+    }
+    else 
+    return res.status(422).json({
+      success: false,
+      message: "Please enter mobile or email",
+    });
+
+    const cart = await CustomerCart.findOneAndUpdate(
+      { userName: mobile },
+      {
+        userName: mobile,
+        productDetails: [],
+      },
+      { upsert: true }
+    );
+
+    return res.status(201).json({
+      success: true,
+      userExist: userExist,
+      message: "Cart Cleared",
+    });
+
+
+  }catch(err) {
+    console.log(err);
+  }
+}
