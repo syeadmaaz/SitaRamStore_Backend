@@ -1,4 +1,5 @@
 const User = require("../../model/userMaster");
+var CustomerCart = require("../../model/mCustomerCart");
 const validateFunction = require("../../utility/validateFunction");
 const crypto = require("crypto");
 const crypt = require("../../utility/crypt");
@@ -41,9 +42,14 @@ exports.login = async (req, res) => {
       
 
       if (decpassword === password){
-        
-        return res.status(201).json({userType:userExist.userType, message: "SignIn Successful" });
-
+        const cartDetails = await CustomerCart.findOne({
+          userName: userExist.mobile,
+        });
+        return res.status(200).json({
+          userType: userExist.userType,
+          cartDetails: cartDetails != null ? cartDetails.productDetails : [],
+          message: "SignIn Successful",
+        });
       }
 
       // if(decpassword!==password)
@@ -63,9 +69,18 @@ exports.login = async (req, res) => {
       let decpassword = crypt.decrypt(userExist.password, secretKey, iv);
       console.log(decpassword);
 
-      if (decpassword === password)
-        return res.status(201).json({userType:userExist.userType, message: "SignIn Successful" });
-      else return res.status(422).json({ error: "Invalid Password" });
+      if (decpassword === password) {
+        const cartDetails = await CustomerCart.findOne({
+          userName: mobile,
+        });
+        
+        return res.status(200).json({
+          userType: userExist.userType,
+          cartDetails: cartDetails != null ? cartDetails.productDetails : [],
+          message: "SignIn Successful",
+        });
+      }
+        else return res.status(422).json({ error: "Invalid Password" });
     } else
       return res.status(422).json({ error: "Fill your credentials properly" });
   } catch (err) {
