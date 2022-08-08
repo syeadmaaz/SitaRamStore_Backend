@@ -40,8 +40,11 @@ exports.login = async (req, res) => {
       console.log(decpassword);
       
 
-      if (decpassword === password)
+      if (decpassword === password){
+        
         return res.status(201).json({userType:userExist.userType, message: "SignIn Successful" });
+
+      }
 
       // if(decpassword!==password)
       else {

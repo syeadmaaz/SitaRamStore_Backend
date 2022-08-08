@@ -25,14 +25,16 @@ exports.saveCart = async (req, res) => {
 };
 
 exports.fetchCart = async(req,res) => {
+  console.log(req.query);
+  
   try{
     const cartDetails = await CustomerCart.findOne({
       userName: req.query.userName,
   });
-    console.log(cartDetails.productDetails)
+    // console.log(cartDetails.productDetails)
     return res.status(201).json({
       success: true,
-      cartDetails: cartDetails.productDetails,
+      cartDetails: cartDetails != null ? cartDetails.productDetails : [],
       message: "Cart Fetched Successfully",
     });
   }catch(err) {
