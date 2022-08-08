@@ -6,6 +6,7 @@ var productMasterSchema = new mongoose.Schema({
   productID: String,
   productName: String,
   productDescription: String,
+  productMRP: Number,
   productPrice: Number,
   productImage: String,
 });
