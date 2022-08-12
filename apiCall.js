@@ -6,7 +6,7 @@ const login = require('./routes/loginAPI/login')
 const {categoryUpdate,getCategory} = require('./routes/admin/category')
 const {productUpdate, getProduct} = require('./routes/admin/product')
 const { saveCart, fetchCart, clearCart} = require("./routes/cartAPI/cart");
-
+const {checkout} = require('./routes/checkoutAPI/checkout')
 
 var fs = require("fs");
 var path = require("path");
@@ -52,5 +52,8 @@ router.get("/getProduct",getProduct)
 router.post("/saveCart", saveCart);
 router.get("/fetchCart", fetchCart);
 router.get("/clearCart", clearCart);
+
+
+router.post("/checkout",checkout);
 
 module.exports = router;
