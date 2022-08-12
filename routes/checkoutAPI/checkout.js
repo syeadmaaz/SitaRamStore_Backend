@@ -67,10 +67,3 @@ exports.checkout = async (req, res) => {
     console.log(err);
   }
 };
-
-// userName: String,
-//   productDetails: [],
-//   items: Number,
-//   delivery: Number,
-//   orderTotal: Number,
-//   address: String,
