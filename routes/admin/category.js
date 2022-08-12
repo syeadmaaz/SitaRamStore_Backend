@@ -1,5 +1,7 @@
 const cloudinary = require("../../utility/cloudinary");
 var Category = require("../../model/categoryMaster");
+var Product = require("../../model/productMaster");
+var CustomerCart = require("../../model/mCustomerCart");
 
 exports.categoryUpdate = async(req,res) => {
     const { user } = req;
@@ -49,3 +51,45 @@ exports.getCategory = async(req,res) => {
     }
   });
 }
+
+exports.deleteCategory = async(req,res) => {
+  Category.deleteOne({categoryID:req.body.categoryID}, (err, obj) => {
+    if (err) {
+      console.log(err);
+      res
+        .status(500)
+        .json({ success: false, message: "An error occurred", err });
+    } else {
+      console.log(obj)
+      Product.deleteMany({categoryID:req.body.categoryID}, (err, obj) => {
+      if (err) {
+        console.log(err);
+        res
+          .status(500)
+          .json({ success: false, message: "An error occurred", err });
+      }else {
+        console.log(obj)
+        CustomerCart.updateMany(
+          {},
+          { $pull: { productDetails: { categoryID: req.body.categoryID } } },
+          (err, obj) => {
+            if (err) {
+              console.log(err);
+              res
+                .status(500)
+                .json({ success: false, message: "An error occurred", err });
+            } else {
+              console.log(obj);
+              res.status(200).json({
+                success: true,
+                message: "Successful!",
+              });
+            }
+          }
+        );
+      }
+    })
+  }
+  });
+}
+
