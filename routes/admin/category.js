@@ -80,9 +80,13 @@ exports.deleteCategory = async(req,res) => {
                 .json({ success: false, message: "An error occurred", err });
             } else {
               console.log(obj);
-              res.status(200).json({
-                success: true,
-                message: "Successful!",
+              Category.find({}, (err, items) => {
+                if (err) {
+                  console.log(err);
+                  res.status(500).json({success:false,message: "An error occurred", err});
+                } else {
+                   res.status(200).json({ success: true, categoryItems:items, message: "Successful!" });
+                }
               });
             }
           }
