@@ -4,7 +4,7 @@ const router = express.Router();
 const register = require('./routes/registerAPI/register')
 const login = require('./routes/loginAPI/login')
 const {categoryUpdate,getCategory, deleteCategory} = require('./routes/admin/category')
-const {productUpdate, getProduct} = require('./routes/admin/product')
+const {productUpdate, getProduct, deleteProduct} = require('./routes/admin/product')
 const { saveCart, fetchCart, clearCart} = require("./routes/cartAPI/cart");
 const {checkout} = require('./routes/checkoutAPI/checkout')
 
@@ -48,7 +48,7 @@ router.get("/getCategory", getCategory);
 router.get("/getProduct",getProduct)
 
 router.post("/deleteCategory", deleteCategory)
-
+router.post("/deleteProduct", deleteProduct);
 // router.get("/saveCart",saveCart)
 
 router.post("/saveCart", saveCart);

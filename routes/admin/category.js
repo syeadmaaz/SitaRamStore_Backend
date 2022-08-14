@@ -95,5 +95,9 @@ exports.deleteCategory = async(req,res) => {
     })
   }
   });
+} 
+
+exports.editCategory = async(req,res) => {
+  
 }
 
