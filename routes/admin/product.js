@@ -1,5 +1,6 @@
 const cloudinary = require("../../utility/cloudinary");
 var Product = require("../../model/productMaster");
+var CustomerCart = require("../../model/mCustomerCart");
 
 exports.productUpdate = async (req, res) => {
   const { user } = req;
@@ -42,8 +43,8 @@ exports.productUpdate = async (req, res) => {
 };
 
 exports.getProduct = async (req, res) => {
-  console.log(req.query)
-  Product.find({categoryID: req.query.categoryID}, (err, items) => {
+  console.log(req.query);
+  Product.find({ categoryID: req.query.categoryID }, (err, items) => {
     if (err) {
       console.log(err);
       res
@@ -51,6 +52,49 @@ exports.getProduct = async (req, res) => {
         .json({ success: false, message: "An error occurred", err });
     } else {
       res.status(200).json({ success: true, productItems: items });
+    }
+  });
+};
+
+exports.deleteProduct = async (req, res) => {
+  Product.deleteOne({ productID: req.body.productID }, (err, obj) => {
+    if (err) {
+      console.log(err);
+      res
+        .status(500)
+        .json({ success: false, message: "An error occurred", err });
+    } else {
+      console.log(obj);
+      CustomerCart.updateMany(
+        {},
+        { $pull: { productDetails: { productID: req.body.productID } } },
+        (err, obj) => {
+          if (err) {
+            console.log(err);
+            res
+              .status(500)
+              .json({ success: false, message: "An error occurred", err });
+          } else {
+            console.log(obj);
+            Product.find({ productID: req.body.productID }, (err, items) => {
+              if (err) {
+                console.log(err);
+                res
+                  .status(500)
+                  .json({ success: false, message: "An error occurred", err });
+              } else {
+                res
+                  .status(200)
+                  .json({
+                    success: true,
+                    productItems: items,
+                    message: "Successful!",
+                  });
+              }
+            });
+          }
+        }
+      );
     }
   });
 };
