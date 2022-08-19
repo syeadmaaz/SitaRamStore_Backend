@@ -76,7 +76,7 @@ exports.deleteProduct = async (req, res) => {
               .json({ success: false, message: "An error occurred", err });
           } else {
             console.log(obj);
-            Product.find({ productID: req.body.productID }, (err, items) => {
+            Product.find({}, (err, items) => {
               if (err) {
                 console.log(err);
                 res
