@@ -6,6 +6,7 @@ const login = require('./routes/loginAPI/login')
 const {categoryUpdate,getCategory, deleteCategory} = require('./routes/admin/category')
 const {productUpdate, getProduct, deleteProduct} = require('./routes/admin/product')
 const { saveCart, fetchCart, clearCart} = require("./routes/cartAPI/cart");
+const {addAddress} = require("./routes/cartAPI/address")
 const {checkout} = require('./routes/checkoutAPI/checkout')
 
 var fs = require("fs");
@@ -54,6 +55,8 @@ router.post("/deleteProduct", deleteProduct);
 router.post("/saveCart", saveCart);
 router.get("/fetchCart", fetchCart);
 router.get("/clearCart", clearCart);
+
+router.post("/addAddress", addAddress)
 
 
 router.post("/checkout",checkout);
