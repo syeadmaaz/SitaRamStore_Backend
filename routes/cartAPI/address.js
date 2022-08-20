@@ -77,12 +77,12 @@ exports.addAddress = async (req, res) => {
       }
     });
 
+
     return res.status(201).json({
       success: true,
       message: "Address Added Successfully!",
-      userExist,
-      addressData,
-      userAddress,
+      userName,
+      address: newUserAddress
     });
   } catch (err) {
     console.log(err);
