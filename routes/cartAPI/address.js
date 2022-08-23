@@ -47,16 +47,16 @@ exports.addAddress = async (req, res) => {
     if (userAddress.length == 0) {
       newUserAddress.push(addressData);
     } else {
-      if (addressData.default) {
+      if (addressData.default.value) {
         var index = -1;
         userAddress.map((items, ind) => {
           console.log(items);
-          if (items.default) {
+          if (items.default.value) {
             index = ind;
           }
         });
         console.log(index);
-        if (index != -1) userAddress[index].default = false;
+        if (index != -1) userAddress[index].default.value = false;
         newUserAddress = userAddress;
         newUserAddress.push(addressData);
       } else {
