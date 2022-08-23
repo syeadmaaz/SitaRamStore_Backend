@@ -116,11 +116,18 @@ exports.fetchCart = async (req, res) => {
     const cartDetails = await CustomerCart.findOne({
       userName: mobile,
     });
+
+    const userDetails = await User.findOne({
+      mobile: mobile
+    })
+
+
     // console.log(cartDetails.productDetails)
     return res.status(201).json({
       success: true,
       cartDetails: cartDetails != null ? cartDetails.productDetails : [],
-      message: "Cart Fetched Successfully",
+      address: userDetails.address,
+      message: "Cart and Address Fetched Successfully",
     });
   } catch (err) {
     console.log(err);
