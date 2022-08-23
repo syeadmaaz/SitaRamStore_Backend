@@ -3,6 +3,8 @@ const validateFunction = require("../../utility/validateFunction");
 
 exports.addAddress = async (req, res) => {
   const { userName, addressData } = req.body;
+  console.log(addressData)
+  console.log(userName)
   try {
     if (!userName || !addressData) {
       return res
