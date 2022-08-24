@@ -1,5 +1,6 @@
 var CustomerCart = require("../../model/mCustomerCart");
 const User = require("../../model/userMaster");
+const Category = require("../../model/categoryMaster");
 const validateFunction = require("../../utility/validateFunction");
 
 exports.saveCart = async (req, res) => {
@@ -120,11 +121,12 @@ exports.fetchCart = async (req, res) => {
     const userDetails = await User.findOne({
       mobile: mobile
     })
+    
+    const categoryDetails = await Category.find({});
 
-
-    // console.log(cartDetails.productDetails)
     return res.status(201).json({
       success: true,
+      categoryItems: categoryDetails,
       cartDetails: cartDetails != null ? cartDetails.productDetails : [],
       address: userDetails.address,
       message: "Cart and Address Fetched Successfully",

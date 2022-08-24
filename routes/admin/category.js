@@ -3,101 +3,110 @@ var Category = require("../../model/categoryMaster");
 var Product = require("../../model/productMaster");
 var CustomerCart = require("../../model/mCustomerCart");
 
-exports.categoryUpdate = async(req,res) => {
-    const { user } = req;
-    console.log(req)
+exports.categoryUpdate = async (req, res) => {
+  const { user } = req;
+  console.log(req);
+  try {
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      public_id: `image-${Date.now()}`,
+      width: 500,
+      height: 500,
+      crop: "fill",
+    });
 
-    try {
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        public_id: `image-${Date.now()}`,
-        width: 500,
-        height: 500,
-        crop: "fill",
-      });
+    console.log(result.url);
 
-      console.log(result.url);
+    var categoryObj = new Category({
+      categoryID: `C-${Date.now()}`,
+      categoryName: req.body.name,
+      categoryDescription: req.body.desc ? req.body.desc : null,
+      categoryImage: result.url,
+    });
 
-      var categoryObj = new Category({
-        categoryID:`C-${Date.now()}`,
-        categoryName: req.body.name,
-        categoryDescription: req.body.desc?req.body.desc:null,
-        categoryImage: result.url
-      });
-
-      if (await categoryObj.save()) 
+    if (await categoryObj.save())
       return res
         .status(201)
         .json({ success: true, message: "New Category Added!" });
-      else return res
+    else
+      return res
         .status(500)
         .json({ success: false, message: "server error, try after some time" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "server error, try after some time" });
+    console.log("Error while uploading category image", error.message);
+  }
+};
 
-    } catch (error) {
-      res
-        .status(500)
-        .json({ success: false, message: "server error, try after some time" });
-      console.log("Error while uploading category image", error.message);
-    }
-
-}
-
-exports.getCategory = async(req,res) => {
+exports.getCategory = async (req, res) => {
   Category.find({}, (err, items) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({success:false,message: "An error occurred", err});
-    } else {
-       res.status(200).json({ success: true, categoryItems:items });
-    }
-  });
-}
-
-exports.deleteCategory = async(req,res) => {
-  Category.deleteOne({categoryID:req.body.categoryID}, (err, obj) => {
     if (err) {
       console.log(err);
       res
         .status(500)
         .json({ success: false, message: "An error occurred", err });
     } else {
-      console.log(obj)
-      Product.deleteMany({categoryID:req.body.categoryID}, (err, obj) => {
-      if (err) {
-        console.log(err);
-        res
-          .status(500)
-          .json({ success: false, message: "An error occurred", err });
-      }else {
-        console.log(obj)
-        CustomerCart.updateMany(
-          {},
-          { $pull: { productDetails: { categoryID: req.body.categoryID } } },
-          (err, obj) => {
-            if (err) {
-              console.log(err);
-              res
-                .status(500)
-                .json({ success: false, message: "An error occurred", err });
-            } else {
-              console.log(obj);
-              Category.find({}, (err, items) => {
-                if (err) {
-                  console.log(err);
-                  res.status(500).json({success:false,message: "An error occurred", err});
-                } else {
-                   res.status(200).json({ success: true, categoryItems:items, message: "Successful!" });
-                }
-              });
-            }
-          }
-        );
-      }
-    })
-  }
+      res.status(200).json({ success: true, categoryItems: items });
+    }
   });
-} 
+};
 
-exports.editCategory = async(req,res) => {
-  
-}
+exports.deleteCategory = async (req, res) => {
+  Category.deleteOne({ categoryID: req.body.categoryID }, (err, obj) => {
+    if (err) {
+      console.log(err);
+      res
+        .status(500)
+        .json({ success: false, message: "An error occurred", err });
+    } else {
+      console.log(obj);
+      Product.deleteMany({ categoryID: req.body.categoryID }, (err, obj) => {
+        if (err) {
+          console.log(err);
+          res
+            .status(500)
+            .json({ success: false, message: "An error occurred", err });
+        } else {
+          console.log(obj);
+          CustomerCart.updateMany(
+            {},
+            { $pull: { productDetails: { categoryID: req.body.categoryID } } },
+            (err, obj) => {
+              if (err) {
+                console.log(err);
+                res
+                  .status(500)
+                  .json({ success: false, message: "An error occurred", err });
+              } else {
+                console.log(obj);
+                Category.find({}, (err, items) => {
+                  if (err) {
+                    console.log(err);
+                    res
+                      .status(500)
+                      .json({
+                        success: false,
+                        message: "An error occurred",
+                        err,
+                      });
+                  } else {
+                    res
+                      .status(200)
+                      .json({
+                        success: true,
+                        categoryItems: items,
+                        message: "Successful!",
+                      });
+                  }
+                });
+              }
+            }
+          );
+        }
+      });
+    }
+  });
+};
 
+exports.editCategory = async (req, res) => {};
